@@ -470,7 +470,7 @@
         margin-top: 8px;
       }
       .struk-catatan-section .catatan-title {
-        font-weight: bold;
+        font-weight: normal;
         margin-bottom: 2px;
       }
       .struk-catatan-section .catatan-content {
@@ -777,7 +777,7 @@
       }
       .nota-category-header {
         font-size: 13px;
-        font-weight: bold;
+        font-weight: normal;
         text-align: left;
         margin-top: 8px;
         margin-bottom: 2px;
@@ -802,7 +802,7 @@
       }
       .detail-item-value {
         font-size: 18px;
-        font-weight: bold;
+        font-weight: normal;
         text-align: right;
         line-height: 1.3;
         min-height: 1.3em;
@@ -810,14 +810,14 @@
       }
       .detail-item-value.overweight {
         color: red;
-        font-weight: bold;
+        font-weight: normal;
       }
       .detail-item-placeholder {
         color: #777;
       }
       .detail-column-separator {
         font-size: 16px;
-        font-weight: bold;
+        font-weight: normal;
         text-align: right;
         margin: 2px 0 1px 0;
         line-height: 1;
@@ -825,7 +825,7 @@
       }
       .detail-column-sum {
         font-size: 17px;
-        font-weight: bold;
+        font-weight: normal;
         text-align: right;
         margin-top: 1px;
         padding-right: 3px;
@@ -841,11 +841,11 @@
       }
       .nota-grand-total-section .nota-label strong {
         font-size: 16px;
-        font-weight: bold;
+        font-weight: normal;
       }
       #notaGrandTotalPembayaranValue {
         font-size: 18px !important;
-        font-weight: bold;
+        font-weight: normal;
       }
       .nota-final-footer {
         margin-top: 10px;
@@ -2033,6 +2033,7 @@
                           <option value="DC 8706 CR"></option>
                           <option value="DP 8420 CZ"></option>
                           <option value="DC 8199 FC"></option>
+                          <option value="DW 8134 CI"></option>
                           <option value="DP 8950 CA"></option>
                         </datalist>
                       </div>
@@ -2334,8 +2335,7 @@
     <span class="receipt-label"><strong>Total Muatan</strong></span>
     <span class="receipt-colon">:</span>
     <strong class="receipt-value">
-      <span id="summaryGrandTotalBerat"></span> Kg |
-      <span id="summaryGrandTotalKarung"></span> K
+      <span id="summaryGrandTotalBerat"></span> Kg
     </strong>
   </p>
 </div>
@@ -2655,7 +2655,7 @@
                   <div class="nota-grand-total-section">
                     <p>
                       <span class="nota-label"
-                        ><strong>Total Harga</strong></span
+                        >Total Harga</span
                       ><span class="nota-colon">:</span
                       ><span
                         id="notaGrandTotalPembayaranValue"
@@ -2743,6 +2743,7 @@
                       <option value="DC 8706 CR"></option>
                       <option value="DP 8420 CZ"></option>
                       <option value="DC 8199 FC"></option>
+                      <option value="DW 8134 CI"></option>
                       <option value="DP 8950 CA"></option>
                     </datalist>
                   </div>
@@ -3893,6 +3894,7 @@
             ) || 0;
 
           let grandTotalBeratBersih = 0;
+          let karungPotonganPanca = 0;
           let grandTotalKarung = 0;
 
           const calculateGrossTotals = (container) => {
@@ -4956,7 +4958,6 @@ if (grandTotalKarungAbnormal > 0) {
 summaryEl.querySelector("#summaryGrandTotalBerat").textContent = formatAngka(
   grandTotalBeratBersih,
 );
-summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalKarung}`;
 
             currentStrukData = {
               tanggal: appContainer.querySelector("#tanggal").value,
@@ -5600,23 +5601,23 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
               );
 
               // --- LOGIKA BARU UNTUK MENYEMBUNYIKAN POTONGAN ---
-              let summaryHTMLNormal = `<span class="nota-label">Total Berat</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatAngka(
-                totalBeratKotorNormal,
-              )} Kg</strong>`;
-              summaryHTMLNormal += `<span class="nota-label">Jumlah Karung</span><span class="nota-colon">:</span><strong class="nota-value bold">${normalDataGross.totalKarung} K</strong>`;
-              if (totalPotonganNormal > 0) {
-                summaryHTMLNormal += `
-                <span class="nota-label">Potongan</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatAngka(
-                  totalPotonganNormal,
-                )} Kg</strong>
-                <span class="nota-label">Berat Bersih</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatAngka(
-                  totalBeratBersihNormal,
-                )} Kg</strong>
-            `;
-              }
-              summaryHTMLNormal += `<span class="nota-label">Harga/Kg</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatRupiah(
-                hargaNormal,
-              )}</strong>`;
+              let summaryHTMLNormal = `<span class="nota-label">Total Berat</span><span class="nota-colon">:</span><span class="nota-value">${formatAngka(
+  totalBeratKotorNormal,
+)} Kg</span>`;
+summaryHTMLNormal += `<span class="nota-label">Jumlah Karung</span><span class="nota-colon">:</span><span class="nota-value">${normalDataGross.totalKarung} K</span>`;
+if (totalPotonganNormal > 0) {
+  summaryHTMLNormal += `
+  <span class="nota-label">Potongan</span><span class="nota-colon">:</span><span class="nota-value">${formatAngka(
+    totalPotonganNormal,
+  )} Kg</span>
+  <span class="nota-label">Berat Bersih</span><span class="nota-colon">:</span><span class="nota-value">${formatAngka(
+    totalBeratBersihNormal,
+  )} Kg</span>
+`;
+}
+summaryHTMLNormal += `<span class="nota-label">Harga/Kg</span><span class="nota-colon">:</span><span class="nota-value">${formatRupiah(
+  hargaNormal,
+)}</span>`;
 
               rincianNormalSection.querySelector(
                 ".nota-summary-section",
@@ -5637,23 +5638,23 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
               );
 
               // --- LOGIKA BARU UNTUK MENYEMBUNYIKAN POTONGAN ---
-              let summaryHTMLTidakNormal = `<span class="nota-label">Total</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatAngka(
-                totalBeratKotorTidakNormal,
-              )} Kg</strong>`;
-              summaryHTMLTidakNormal += `<span class="nota-label">Jumlah Karung</span><span class="nota-colon">:</span><strong class="nota-value bold">${tidakNormalDataGross.totalKarung} K</strong>`;
-              if (totalPotonganTidakNormal > 0) {
-                summaryHTMLTidakNormal += `
-                <span class="nota-label">Potongan</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatAngka(
-                  totalPotonganTidakNormal,
-                )} Kg</strong>
-                <span class="nota-label">Berat Bersih</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatAngka(
-                  totalBeratBersihTidakNormal,
-                )} Kg</strong>
-            `;
-              }
-              summaryHTMLTidakNormal += `<span class="nota-label">Harga/Kg</span><span class="nota-colon">:</span><strong class="nota-value bold">${formatRupiah(
-                hargaTidakNormal,
-              )}</strong>`;
+              let summaryHTMLTidakNormal = `<span class="nota-label">Total</span><span class="nota-colon">:</span><span class="nota-value">${formatAngka(
+  totalBeratKotorTidakNormal,
+)} Kg</span>`;
+summaryHTMLTidakNormal += `<span class="nota-label">Jumlah Karung</span><span class="nota-colon">:</span><span class="nota-value">${tidakNormalDataGross.totalKarung} K</span>`;
+if (totalPotonganTidakNormal > 0) {
+  summaryHTMLTidakNormal += `
+  <span class="nota-label">Potongan</span><span class="nota-colon">:</span><span class="nota-value">${formatAngka(
+    totalPotonganTidakNormal,
+  )} Kg</span>
+  <span class="nota-label">Berat Bersih</span><span class="nota-colon">:</span><span class="nota-value">${formatAngka(
+    totalBeratBersihTidakNormal,
+  )} Kg</span>
+`;
+}
+summaryHTMLTidakNormal += `<span class="nota-label">Harga/Kg</span><span class="nota-colon">:</span><span class="nota-value">${formatRupiah(
+  hargaTidakNormal,
+)}</span>`;
 
               rincianTidakNormalSection.querySelector(
                 ".nota-summary-section",
@@ -5866,9 +5867,10 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
                 karungManualInput.classList.add("hidden");
                 karungManualInput.required = false;
                 subRitaseWrapper.classList.remove("hidden");
-                subRitaseWrapper
-                  .querySelectorAll("input")
-                  .forEach((inp) => (inp.required = true));
+                subRitaseWrapper.querySelectorAll("input").forEach((inp) => {
+  if (inp.name === "subKarung") inp.required = true;
+  else inp.required = false; // Nama buruh jadi opsional
+});
               } else {
                 supirInput.classList.add("hidden");
                 supirInput.required = false;
@@ -6102,7 +6104,7 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
 
             subDiv.innerHTML = `
     <input type="number" name="subKarung" placeholder="Jml Karung" min="1" required class="form-input w-32" value="${data.karung || ""}">
-    <input type="text" name="subBuruh" placeholder="Nama Buruh (Pisahkan dgn Koma)" required class="form-input flex-grow uppercase" value="${data.buruh || ""}">
+    <input type="text" name="subBuruh" placeholder="Nama Buruh (Kosongkan jika sdh dibayar)" class="form-input flex-grow uppercase" value="${data.buruh || ""}">
     <button type="button" class="remove-sub-btn text-red-500 font-bold text-xl px-2 hover:text-red-700">&times;</button>
   `;
 
@@ -6186,6 +6188,7 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
             let totalBeratJauh = 0;
             let jumlahRitJauh = 0;
             let ritaseDetails = [];
+            let karungPotonganPanca = 0;
 
             // Penampung Gaji Pekerja
             let dataSupir = {}; // { "NAMA": { rit: 0, gaji: 0, rincian: [] } }
@@ -6249,36 +6252,35 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
                     .querySelector('input[name="subBuruh"]')
                     .value.toUpperCase();
 
-                  if (isNaN(subKarung) || subKarung <= 0 || !subBuruhStr) {
-                    alert(
-                      `Data kelompok karung/buruh pada Ritase R-${ritNum} tidak lengkap.`,
-                    );
+                  if (isNaN(subKarung) || subKarung <= 0) {
+                    alert(`Data jumlah karung pada Ritase R-${ritNum} wajib diisi.`);
                     formIsValid = false;
                     return;
                   }
 
-                  karungPerRitase += subKarung;
-                  const buruhArray = subBuruhStr
-                    .split(",")
-                    .map((b) => b.trim())
-                    .filter((b) => b);
+                  karungPerRitase += subKarung; // Selalu dihitung untuk total muatan mobil
 
-                  // 1. Bulatkan tarif dasar per orang terlebih dahulu (Contoh: 5000 / 3 = 1667)
-                  const tarifPerOrang = Math.round(
-                    upahPanca / buruhArray.length,
-                  );
-                  // 2. Kalikan jumlah karung dengan tarif yang sudah dibulatkan (Contoh: 22 x 1667 = 36674)
-                  const upahPerOrang = subKarung * tarifPerOrang;
+                  if (subBuruhStr) { // Hanya potong gaji Panca JIKA nama buruh diisi
+                      karungPotonganPanca += subKarung; 
+                      
+                      const buruhArray = subBuruhStr
+                        .split(",")
+                        .map((b) => b.trim())
+                        .filter((b) => b);
 
-                  // Masukkan ke Profil Individu Panca
-                  buruhArray.forEach((buruh) => {
-                    if (!dataPanca[buruh])
-                      dataPanca[buruh] = { karung: 0, gaji: 0, rincian: [] };
-                    dataPanca[buruh].gaji += upahPerOrang;
-                    dataPanca[buruh].rincian.push(
-                      `Rit - ${ritNum} : ${subKarung}k x ${formatAngka(tarifPerOrang)} = ${formatRupiah(upahPerOrang)}`,
-                    );
-                  });
+                      if (buruhArray.length > 0) {
+                          const tarifPerOrang = Math.round(upahPanca / buruhArray.length);
+                          const upahPerOrang = subKarung * tarifPerOrang;
+        
+                          buruhArray.forEach((buruh) => {
+                            if (!dataPanca[buruh]) dataPanca[buruh] = { karung: 0, gaji: 0, rincian: [] };
+                            dataPanca[buruh].gaji += upahPerOrang;
+                            dataPanca[buruh].rincian.push(
+                              `Rit - ${ritNum} : ${subKarung}k x ${formatAngka(tarifPerOrang)} = ${formatRupiah(upahPerOrang)}`
+                            );
+                          });
+                      }
+                  }
                 });
 
                 // Olah Profil Individu Supir
@@ -6328,7 +6330,7 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
             // 2. KALKULASI PENDAPATAN MOBIL
             const totalJasaKotor =
               grandTotalBerat * hargaJasa + totalBeratJauh * hargaTambahan;
-            const totalPotonganPanca = grandTotalKarung * upahPanca;
+            const totalPotonganPanca = karungPotonganPanca * upahPanca;
             const totalPotonganSupir = ritaseDetails.length * upahSupir;
             const totalPotonganKonsumsi = ritaseDetails.length * upahKonsumsi;
             const totalJasaBersih =
@@ -6459,7 +6461,7 @@ summaryEl.querySelector("#summaryGrandTotalKarung").textContent = `${grandTotalK
             if (totalPotonganPanca > 0) {
               rowPanca.classList.remove("hidden");
               rowPanca.querySelector("#recapStrukPancaValue").innerHTML =
-                `<span style="display:block; font-size:12px; font-weight:normal; margin-bottom:2px;">${grandTotalKarung} K x ${formatAngka(upahPanca)} =</span><strong style="display:block;">- ${formatRupiah(totalPotonganPanca)}</strong>`;
+                `<span style="display:block; font-size:12px; font-weight:normal; margin-bottom:2px;">${karungPotonganPanca} K x ${formatAngka(upahPanca)} =</span><strong style="display:block;">- ${formatRupiah(totalPotonganPanca)}</strong>`;
             } else rowPanca.classList.add("hidden");
 
             const rowSupir = recapReceiptContainer.querySelector(
